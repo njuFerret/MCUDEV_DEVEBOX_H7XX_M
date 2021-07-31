@@ -163,10 +163,6 @@
 
 // Winbond W25Q16 SPI Flash = 64 Mbit (8 MByte)
 #define MICROPY_HW_SPIFLASH_SIZE_BITS (64 * 1024 * 1024)
-// #define MICROPY_HW_SPIFLASH_CS      (pin_A15)
-// #define MICROPY_HW_SPIFLASH_SCK     (pin_B3)
-// #define MICROPY_HW_SPIFLASH_MISO    (pin_B4)
-// #define MICROPY_HW_SPIFLASH_MOSI    (pin_B5)
 #define MICROPY_HW_QSPIFLASH_SIZE_BITS_LOG2 (26)
 #define MICROPY_HW_QSPIFLASH_CS         (pin_B6)
 #define MICROPY_HW_QSPIFLASH_SCK        (pin_B2)
@@ -174,12 +170,7 @@
 #define MICROPY_HW_QSPIFLASH_IO1        (pin_D12)
 #define MICROPY_HW_QSPIFLASH_IO2        (pin_E2)
 #define MICROPY_HW_QSPIFLASH_IO3        (pin_D13)
-// #define MICROPY_HW_QSPIFLASH_CS         (pin_B6)
-// #define MICROPY_HW_QSPIFLASH_SCK        (pin_B2)
-// #define MICROPY_HW_QSPIFLASH_IO0        (pin_F8)
-// #define MICROPY_HW_QSPIFLASH_IO1        (pin_F9)
-// #define MICROPY_HW_QSPIFLASH_IO2        (pin_F7)
-// #define MICROPY_HW_QSPIFLASH_IO3        (pin_F6)
+
 
 #define MICROPY_BOARD_EARLY_INIT    Mcudev_Devebox_H743VI_board_early_init
 void Mcudev_Devebox_H743VI_board_early_init(void);
