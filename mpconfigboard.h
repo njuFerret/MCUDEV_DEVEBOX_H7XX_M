@@ -10,11 +10,25 @@
 #define MICROPY_HW_ENABLE_USB       (1)
 #define MICROPY_HW_ENABLE_SDCARD    (0)		// it has a sd scard, but no detect pin
 
-// HSE is 25MHz
-#define MICROPY_HW_CLK_PLLM (25) // divide external clock by this to get 1MHz
-#define MICROPY_HW_CLK_PLLN (160) // PLL clock in MHz
-#define MICROPY_HW_CLK_PLLP (RCC_PLLP_DIV2) // divide PLL clock by this to get core clock
-#define MICROPY_HW_CLK_PLLQ (4) // divide core clock by this to get 40MHz
+// // HSE is 25MHz
+// #define MICROPY_HW_CLK_PLLM (25) // divide external clock by this to get 1MHz
+// ##define MICROPY_HW_CLK_PLLN (160) // PLL clock in MHz
+// ##define MICROPY_HW_CLK_PLLP (RCC_PLLP_DIV2) // divide PLL clock by this to get core clock
+// ##define MICROPY_HW_CLK_PLLQ (4) // divide core clock by this to get 40MHz
+
+// The board has an 25MHz HSE, the following gives 480MHz CPU speed
+#define MICROPY_HW_CLK_PLLM (5)
+#define MICROPY_HW_CLK_PLLN (192)
+#define MICROPY_HW_CLK_PLLP (2)
+#define MICROPY_HW_CLK_PLLQ (5)
+#define MICROPY_HW_CLK_PLLR (2)
+
+// The USB clock is set using PLL3
+#define MICROPY_HW_CLK_PLL3M (5)
+#define MICROPY_HW_CLK_PLL3N (48)
+#define MICROPY_HW_CLK_PLL3P (2)
+#define MICROPY_HW_CLK_PLL3Q (5)
+#define MICROPY_HW_CLK_PLL3R (2)
 
 // The board has a 32kHz crystal for the RTC
 #define MICROPY_HW_RTC_USE_LSE      (1)
