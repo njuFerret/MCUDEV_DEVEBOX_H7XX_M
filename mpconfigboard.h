@@ -1,6 +1,6 @@
 #define MICROPY_HW_BOARD_NAME       "MCUDEV DEVEBOX STM32H7XX_M"
 #define MICROPY_HW_MCU_NAME         "STM32H7XX"
-#define MICROPY_HW_FLASH_FS_LABEL   "DEVEBOXH7XX_M"
+#define MICROPY_HW_FLASH_FS_LABEL   "MINIH7XX_M"
 
 #define MICROPY_HW_HAS_SWITCH       (1)		// has 2 buttons K1, K2
 #define MICROPY_HW_HAS_FLASH        (1)
@@ -150,6 +150,54 @@
 #define MICROPY_HW_LED_ON(pin)      (mp_hal_pin_low(pin))
 #define MICROPY_HW_LED_OFF(pin)     (mp_hal_pin_high(pin))
 
+
+
+// 1 = use internal flash (2048 KByte)
+// 0 = use onboard SPI flash (8 MByte) Winbond W25Q64 with QSPI
+#define MICROPY_HW_ENABLE_INTERNAL_FLASH_STORAGE (0)
+
+// If using onboard SPI flash
+#if !MICROPY_HW_ENABLE_INTERNAL_FLASH_STORAGE
+
+#define MICROPY_HW_SPIFLASH_ENABLE_CACHE (1)
+
+// Winbond W25Q16 SPI Flash = 64 Mbit (8 MByte)
+#define MICROPY_HW_SPIFLASH_SIZE_BITS (64 * 1024 * 1024)
+// #define MICROPY_HW_SPIFLASH_CS      (pin_A15)
+// #define MICROPY_HW_SPIFLASH_SCK     (pin_B3)
+// #define MICROPY_HW_SPIFLASH_MISO    (pin_B4)
+// #define MICROPY_HW_SPIFLASH_MOSI    (pin_B5)
+#define MICROPY_HW_QSPIFLASH_SIZE_BITS_LOG2 (26)
+#define MICROPY_HW_QSPIFLASH_CS         (pin_B6)
+#define MICROPY_HW_QSPIFLASH_SCK        (pin_B2)
+#define MICROPY_HW_QSPIFLASH_IO0        (pin_D11)
+#define MICROPY_HW_QSPIFLASH_IO1        (pin_D12)
+#define MICROPY_HW_QSPIFLASH_IO2        (pin_E2)
+#define MICROPY_HW_QSPIFLASH_IO3        (pin_D13)
+// #define MICROPY_HW_QSPIFLASH_CS         (pin_B6)
+// #define MICROPY_HW_QSPIFLASH_SCK        (pin_B2)
+// #define MICROPY_HW_QSPIFLASH_IO0        (pin_F8)
+// #define MICROPY_HW_QSPIFLASH_IO1        (pin_F9)
+// #define MICROPY_HW_QSPIFLASH_IO2        (pin_F7)
+// #define MICROPY_HW_QSPIFLASH_IO3        (pin_F6)
+
+#define MICROPY_BOARD_EARLY_INIT    Mcudev_Devebox_H743VI_board_early_init
+void Mcudev_Devebox_H743VI_board_early_init(void);
+
+extern const struct _mp_spiflash_config_t spiflash_config;
+extern struct _spi_bdev_t spi_bdev;
+#define MICROPY_HW_BDEV_IOCTL(op, arg) ( \
+    (op) == BDEV_IOCTL_NUM_BLOCKS ? (MICROPY_HW_SPIFLASH_SIZE_BITS / 8 / FLASH_BLOCK_SIZE) : \
+    (op) == BDEV_IOCTL_INIT ? spi_bdev_ioctl(&spi_bdev, (op), (uint32_t)&spiflash_config) : \
+    spi_bdev_ioctl(&spi_bdev, (op), (arg)) \
+)
+#define MICROPY_HW_BDEV_READBLOCKS(dest, bl, n) spi_bdev_readblocks(&spi_bdev, (dest), (bl), (n))
+#define MICROPY_HW_BDEV_WRITEBLOCKS(src, bl, n) spi_bdev_writeblocks(&spi_bdev, (src), (bl), (n))
+
+#endif
+
+
+
 // SD card detect switch
 // #define MICROPY_HW_SDCARD_DETECT_PIN        (pin_A8)	// nope
 // #define MICROPY_HW_SDCARD_DETECT_PULL       (GPIO_PULLUP)
@@ -163,6 +211,7 @@
 // 7  PC8  - DAT0/D0
 // 8  PC9  - DAT1/RES
 // 9  SW2 - NC
+
 
 // USB config
 #define MICROPY_HW_USB_FS (1)
